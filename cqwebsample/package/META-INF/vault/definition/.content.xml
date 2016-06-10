@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:vlt="http://www.day.com/jcr/vault/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:created="{Date}2015-12-07T16:37:45.627+08:00"
+    jcr:createdBy="admin"
+    jcr:description=""
+    jcr:lastModified="{Date}2015-12-07T16:37:45.627+08:00"
+    jcr:lastModifiedBy="admin"
+    jcr:primaryType="vlt:PackageDefinition"
+    buildCount="13"
+    builtWith="Adobe Experience Manager-6.1.0.20150507"
+    dependencies="[]"
+    group="cqwebsample"
+    lastUnwrapped="{Date}2015-12-07T16:37:45.627+08:00"
+    lastUnwrappedBy="admin"
+    lastWrapped="{Date}2015-12-07T16:37:45.627+08:00"
+    lastWrappedBy="admin"
+    name="cqwebsample-main"
+    requiresRestart="{Boolean}false"
+    requiresRoot="{Boolean}false"
+    version="">
+    <filter jcr:primaryType="nt:unstructured">
+        <f0
+            jcr:primaryType="nt:unstructured"
+            mode="replace"
+            root="/etc/designs/cqwebsample"
+            rules="[]"/>
+        <f1
+            jcr:primaryType="nt:unstructured"
+            mode="replace"
+            root="/apps/cqwebsample"
+            rules="[]"/>
+        <f2
+            jcr:primaryType="nt:unstructured"
+            mode="replace"
+            root="/content/cqwebsample"
+            rules="[]"/>
+        <f3
+            jcr:primaryType="nt:unstructured"
+            mode="replace"
+            root="/content/dam/keppel-land-live"
+            rules="[]"/>
+    </filter>
+</jcr:root>

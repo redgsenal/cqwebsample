@@ -1,0 +1,167 @@
+<project name="cqwebsample-component" default="package.build" basedir=".">
+    <property environment="env"/>
+    <property file="${user.home}/.cqwebsample/build.properties"/>
+    
+    <property name="cq.domain" value="localhost:4502"/>
+    <property name="cq.username" value="admin"/>
+    <property name="cq.password" value="admin"/>
+		
+    <property name="build.env" value="dev"/>
+    <property name="build.number" value="1"/>
+
+    <property name="package.name" value="cqwebsample-main"/>
+    <property name="package.group" value="cqwebsample"/>
+    <property name="package.dir" value="target"/>
+
+    <tstamp>
+        <format property="BUILD_DATE" pattern="yyyy-MM-dd'T'HH:mm:ss" locale="en,UK"/>
+    </tstamp>
+
+    <macrodef name="maven">
+        <attribute name="dir" default="."/>
+        <attribute name="args"/>
+
+        <sequential>
+            <exec executable="mvn.bat" dir="@{dir}" osfamily="Windows" failonerror="true">
+                <arg line="@{args}"/>
+            </exec>
+            <exec executable="mvn" dir="@{dir}" os="SunOS|Mac OS X|Linux" failonerror="true">
+                <arg line="@{args}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+    <!-- curl function for uploading package to CQ -->
+    <macrodef name="curl">
+        <attribute name="args"/>
+
+        <sequential>
+            <exec executable="tools/curl/curl.exe" osfamily="Windows" failonerror="true">
+                <arg line="@{args}"/>
+            </exec>
+            <exec executable="curl" os="SunOS|Mac OS X|Linux" failonerror="true">
+                <arg line="@{args}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+    <!-- ### compile SASS to CSS using Compass -->
+    <macrodef name="compass">
+        <attribute name="args"/>
+        <sequential>
+            <exec executable="${env.jruby.path}/compass.bat" osfamily="Windows">
+                <env key="PATH" value="${env.Path};${env.jruby.path.win}"/>
+                <arg line="@{args}"/>
+            </exec>
+            <exec executable="${env.jruby.path}/jruby" os="SunOS|Mac OS X|Linux">
+                <env key="PATH" value="${env.PATH}:${env.jruby.path}"/>
+                <arg line="${env.jruby.path}/compass @{args}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+    <!-- compiles the common libs and other libs folders -->
+    <macrodef name="copy_osgi_bundle">
+        <attribute name="installdir"/>
+        <attribute name="moduledir"/>
+        <attribute name="bundlename"/>
+
+        <sequential>
+            <delete file="@{installdir}/@{bundlename}-1.0-SNAPSHOT.jar"/>
+            <copy file="@{moduledir}/target/@{bundlename}-1.0-SNAPSHOT.jar" toFile="@{installdir}/@{bundlename}-1.0-SNAPSHOT.jar" overwrite="true"/>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="vault_package">
+        <attribute name="name"/>
+        <attribute name="group"/>
+        <attribute name="sourcedir"/>
+        <attribute name="destdir"/>
+        <attribute name="buildcount" default="1"/>
+
+        <sequential>
+            <copy file="@{sourcedir}/META-INF/vault/properties.xml" toFile="@{destdir}/properties.xml" overwrite="true">
+                <filterchain>
+                    <tokenfilter>
+                        <replacestring from="PACKAGE_NAME" to="@{name}"/>
+                        <replacestring from="PACKAGE_GROUP" to="@{group}"/>
+                        <replacestring from="BUILD_NUMBER" to="@{buildcount}"/>
+                        <replacestring from="BUILD_DATE" to="${BUILD_DATE}"/>
+                    </tokenfilter>
+                </filterchain>
+            </copy>
+
+            <zip file="@{destdir}/@{name}.zip" update="true">
+                <zipfileset dir="@{sourcedir}" excludes="**/.svn/**,**/.vlt,**/_vti_cnf/**,META-INF/vault/properties.xml"/>
+                <zipfileset dir="@{destdir}" includes="properties.xml" fullpath="META-INF/vault/properties.xml"/>
+            </zip>
+
+            <delete file="@{destdir}/properties.xml"/>
+        </sequential>
+    </macrodef>
+
+	<target name="sass.compile">
+        	<compass args="compile -c sass/en/config.rb"/>
+	</target>
+
+    <target name="package.compile">
+        <maven args="clean package -e -B"/>
+    </target>
+
+    <target name="package.build" depends="package.compile">
+        <copy_osgi_bundle installdir="cqwebsample/package/jcr_root/apps/cqwebsample/install" moduledir="com.cqwebsample.web.common" bundlename="com.cqwebsample.web.common"/>
+        <vault_package name="${package.name}" group="${package.group}" buildcount="${build.number}" sourcedir="cqwebsample/package/" destdir="${package.dir}"/>
+    </target>
+    
+    <target name="package.zip">
+        <vault_package name="${package.name}" group="${package.group}" buildcount="${build.number}" sourcedir="cqwebsample/package/" destdir="${package.dir}"/>
+    </target>
+
+     <target name="package.production" depends="package.compile">
+        <copy_osgi_bundle installdir="cqwebsample/package/jcr_root/apps/cqwebsample/install" moduledir="com.cqwebsample.web.common" bundlename="com.cqwebsample.web.common"/>
+        <vault_package name="${package.name}" group="${package.group}" buildcount="${build.number}" sourcedir="cqwebsample/package/" destdir="${package.dir}"/>
+    </target>
+    
+     <target name="deploy.watch" depends="package.zip">
+		<!-- Upload package -->
+        <curl args="-X POST -u ${cq.username}:${cq.password} -F package=@${package.dir}/${package.name}.zip -F force=true http://${cq.domain}/crx/packmgr/service/.json/?cmd=upload -sS" />
+		<!-- Install package -->
+        <curl args="-X POST -u ${cq.username}:${cq.password} http://${cq.domain}/crx/packmgr/service/.json/etc/packages/${package.group}/${package.name}.zip?cmd=install -sS" />
+    </target>
+
+    <target name="package.deploy" depends="package.build">
+		<!-- Upload package -->
+        <curl args="-X POST -u ${cq.username}:${cq.password} -F package=@${package.dir}/${package.name}.zip -F force=true http://${cq.domain}/crx/packmgr/service/.json/?cmd=upload -sS" />
+		<!-- Install package -->
+        <curl args="-X POST -u ${cq.username}:${cq.password} http://${cq.domain}/crx/packmgr/service/.json/etc/packages/${package.group}/${package.name}.zip?cmd=install -sS" />
+    </target>
+    
+    <target name="package.quick" depends="package.zip">
+		<!-- Upload package -->
+        <curl args="-X POST -u ${cq.username}:${cq.password} -F package=@${package.dir}/${package.name}.zip -F force=true http://${cq.domain}/crx/packmgr/service/.json/?cmd=upload -sS" />
+		<!-- Install package -->
+        <curl args="-X POST -u ${cq.username}:${cq.password} http://${cq.domain}/crx/packmgr/service/.json/etc/packages/${package.group}/${package.name}.zip?cmd=install -sS" />
+    </target>
+
+    <target name="package.replicate">
+		<!-- Replicate package -->
+        <curl args="-X POST -u ${cq.username}:${cq.password} http://${cq.domain}/crx/packmgr/service/.json/etc/packages/${package.group}/${package.name}.zip?cmd=replicate -sS" />
+    </target>
+	
+	<target name="package.replicate-author-staging" depends="package.build, package.deploy">
+		<vault_package name="${package.name}" group="${package.group}" buildcount="${build.number}" sourcedir="cqwebsample/package/" destdir="${package.dir}"/>
+		<!-- Replicate package -->
+		<curl args="-X POST -u ${cq.username}:${cq.password} http://${cq.domain}/crx/packmgr/service/.json/etc/packages/${package.group}/${package.name}.zip?cmd=replicate -sS" />
+	</target>
+	
+	<!-- <target name="package.deploy.staging">
+		<vault_package name="${package.name}" group="${package.group}" buildcount="${build.number}" sourcedir="cqwebsample/package/" destdir="${package.dir}"/>
+		Upload package
+		<curl args="-X POST -u ${cq.username.staging}:${cq.password.staging} -F package=@${package.dir}/${package.name}.zip -F force=true http://${cq.domain.staging}/crx/packmgr/service/.json/?cmd=upload -sS -v" />
+		Install package
+		<curl args="-X POST -u ${cq.username.staging}:${cq.password.staging} http://${cq.domain.staging}/crx/packmgr/service/.json/etc/packages/${package.group}/${package.name}.zip?cmd=install -sS -v" />
+	</target> -->
+
+<!-- 	<target name="package.replicate.staging" depends="package.deploy.staging">
+		Replicate package
+		<curl args="-X POST -u ${cq.username.staging}:${cq.password.staging} http://${cq.domain.staging}/crx/packmgr/service/.json/etc/packages/${package.group}/${package.name}.zip?cmd=replicate -sS -v" />
+	</target> -->
+
+</project>
