@@ -1,1 +1,4 @@
-.nav { height: 50px; width: 100%; background-color: #c0c0c0; }
+@import url(magnific-popup.css);
+.nav { height: 20px; width: 100%; background-color: #c0c0c0; padding: 10px 0px; }
+
+.nav .nav-sides { padding: 0 20px; }

@@ -1,5 +1,6 @@
 #base=source
 
 jquery.min.js
+jquery.magnific-popup.min.js
 plugins.js
 main.js

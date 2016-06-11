@@ -12,7 +12,7 @@ gutil = require('gulp-util'),
 shell = require('gulp-shell');
 
 gulp.task('default', ['compile']);
-gulp.task('compile', ['sass', 'js', 'deploy']);
+gulp.task('compile', ['sass', 'js', 'assets', 'deploy']);
 
 //cq/aem component styles
 gulp.task('sass', function() {
@@ -27,13 +27,13 @@ gulp.task('sass', function() {
 
 //copy images from HTML to clientlibs; exclude the dummy image files
 gulp.task('assets', function() {
-	gulp.src(['../../HTML/html/images/**','!../../HTML/html/images/dummy/','!../../HTML/html/images/dummy/**'])
+	gulp.src(['images/*'])
 	.pipe(gulp.dest('cqwebsample/package/jcr_root/etc/designs/cqwebsample/clientlibs/images'));
 });
 
 //All changes to the styles and css files are located at HTML\assets\scss folder.
 gulp.task('js', function() {
-	gulp.src(['js/*.js','node_modules/jquery/dist/jquery.min.js', 'node_modules/jquery/dist/jquery.min.map'])
+	gulp.src(['js/*.js','node_modules/jquery/dist/jquery.min.js', 'node_modules/magnific-popup/dist/jquery.magnific-popup.min.js'])
 	.pipe(gulp.dest('cqwebsample/package/jcr_root/etc/designs/cqwebsample/clientlibs/source'));
 });
 

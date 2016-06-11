@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    cq:actions="[text:Article Details - Article Video,-,editannotate,delete,copymove,insert]"
+    cq:disableTargeting="{Boolean}true"
+    cq:lastReplicated="{Date}2013-10-28T02:02:20.884+08:00"
+    cq:lastReplicatedBy="admin"
+    cq:lastReplicationAction="Activate"
+    cq:layout="editbar"
+    jcr:mixinTypes="[cq:ReplicationStatus]"
+    jcr:primaryType="cq:EditConfig">
+    <cq:listeners
+        jcr:primaryType="cq:EditListenersConfig"
+        afteredit="REFRESH_PAGE"/>
+</jcr:root>

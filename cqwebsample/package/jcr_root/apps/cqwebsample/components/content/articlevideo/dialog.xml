@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Dialog"
+    title="dialog"
+    xtype="dialog">
+    <items
+        jcr:primaryType="cq:Widget"
+        xtype="tabpanel">
+        <items jcr:primaryType="cq:WidgetCollection">
+            <tab1
+                jcr:primaryType="cq:Panel"
+                title="Article Video/Text">
+                <items jcr:primaryType="cq:WidgetCollection">
+                	<videocopy
+                    	jcr:primaryType="cq:Widget"
+                        allowBlank="{Boolean}false"
+                        fieldDescription="* required"
+                        fieldLabel="Video article copy "
+                        name="./videocopy"
+                        xtype="richtext"/>
+                    <videoimg
+                    	jcr:primaryType="cq:Widget"
+                        allowBlank="{Boolean}true"
+                        fieldLabel="Video image overlay"
+                        name="./videoimg"
+                        xtype="pathfield"/>
+					<videourl
+					    jcr:primaryType="cq:Widget"
+					    allowBlank="{Boolean}true"
+					    fieldLabel="Video URL (YouTube)"
+					    name="./videourl"
+						xtype="textfield"/>
+                    <videocaption
+					    jcr:primaryType="cq:Widget"
+					    allowBlank="{Boolean}true"
+					    fieldLabel="Video caption"
+					    name="./videocaption"
+						xtype="textfield"/>					
+                </items>
+            </tab1>
+        </items>
+    </items>
+</jcr:root>
