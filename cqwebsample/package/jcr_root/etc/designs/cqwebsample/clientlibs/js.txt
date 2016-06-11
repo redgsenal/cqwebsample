@@ -1,0 +1,5 @@
+#base=source
+
+jquery.min.js
+plugins.js
+main.js

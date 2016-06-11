@@ -2,6 +2,9 @@
 <%@page session="false" %>
 <body>
     <cq:include script="nav.jsp"/>
-    <cq:include script="content.jsp"/>
-    <cq:include script="footer.jsp" />
+	<cq:include path="itoppar" resourceType="foundation/components/iparsys" />  
+    <!-- Your HTML here -->
+	<cq:include path="mainpar" resourceType="foundation/components/parsys" />
+    <cq:include path="ibottompar" resourceType="foundation/components/iparsys" />
+    <cq:include script="footer.jsp"/>
 </body>

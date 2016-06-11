@@ -14,11 +14,9 @@ shell = require('gulp-shell');
 gulp.task('default', ['compile']);
 gulp.task('compile', ['sass', 'js', 'deploy']);
 
-gulp.task('sass', ['sass']);
-
 //cq/aem component styles
 gulp.task('sass', function() {
-	gulp.src('scss/cqcomponents.scss')
+	gulp.src('scss/main.scss')
 		.pipe(
 			sass({
 				outputStyle : 'compact'
@@ -35,7 +33,7 @@ gulp.task('assets', function() {
 
 //All changes to the styles and css files are located at HTML\assets\scss folder.
 gulp.task('js', function() {
-	gulp.src(['../../HTML/html/js/*.js'])
+	gulp.src(['js/*.js','node_modules/jquery/dist/jquery.min.js', 'node_modules/jquery/dist/jquery.min.map'])
 	.pipe(gulp.dest('cqwebsample/package/jcr_root/etc/designs/cqwebsample/clientlibs/source'));
 });
 

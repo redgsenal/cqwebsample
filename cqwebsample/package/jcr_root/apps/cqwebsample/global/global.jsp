@@ -65,7 +65,6 @@
 %><%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %><%
 %><%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %><%
 %><cq:defineObjects /><%
-
     // add more initialization code here
 	// run modes
 	boolean _wcmModeIsAuthor = false;
