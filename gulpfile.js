@@ -12,7 +12,7 @@ gutil = require('gulp-util'),
 shell = require('gulp-shell');
 
 gulp.task('default', ['compile']);
-gulp.task('compile', ['sass', 'js', 'assets', 'deploy']);
+gulp.task('compile', ['sass', 'js', 'assets', 'cssassets', 'deploy']);
 
 //cq/aem component styles
 gulp.task('sass', function() {
@@ -30,6 +30,12 @@ gulp.task('assets', function() {
 	gulp.src(['images/*'])
 	.pipe(gulp.dest('cqwebsample/package/jcr_root/etc/designs/cqwebsample/clientlibs/images'));
 });
+
+gulp.task('cssassets', function() {
+	gulp.src(['cssimages/*'])
+	.pipe(gulp.dest('cqwebsample/package/jcr_root/etc/designs/cqwebsample/clientlibs/themes/images'));
+});
+
 
 //All changes to the styles and css files are located at HTML\assets\scss folder.
 gulp.task('js', function() {

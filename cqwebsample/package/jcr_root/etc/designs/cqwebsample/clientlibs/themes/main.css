@@ -2,3 +2,7 @@
 .nav { height: 20px; width: 100%; background-color: #c0c0c0; padding: 10px 0px; }
 
 .nav .nav-sides { padding: 0 20px; }
+
+.popup-youtube { width: 500px; height: 400px; display: block; margin: 0 auto; text-align: center; position: relative; }
+
+.popup-youtube .icon-play { background: url("images/play_button.png"); height: 158px; width: 158px; display: inline-block; position: absolute; top: 25%; background-size: cover; left: 36%; }
