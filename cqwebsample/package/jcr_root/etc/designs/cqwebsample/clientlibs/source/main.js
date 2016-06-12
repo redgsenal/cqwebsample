@@ -11,4 +11,8 @@ $(function() {
 		preloader : false,
 		fixedContentPos : false
 	});
+	
+	// call OSGi thru ajax plugin.js servertime
+	console.log('server time');
+	$('.servertimevalue').servertime();
 });

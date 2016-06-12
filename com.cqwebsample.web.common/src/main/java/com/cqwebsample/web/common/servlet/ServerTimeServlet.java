@@ -11,19 +11,20 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
 import org.apache.sling.commons.json.JSONException;
 import org.apache.sling.commons.json.JSONObject;
-import org.slf4j.LoggerFactory;
 
 import com.cqwebsample.web.common.utils.HelperUtils;
 
-@SlingServlet(name="mastheadservertime", paths="/apps/bean/mastheadservertime", methods={"GET", "POST"}, metatype=false)
+@SlingServlet(name="servertime", paths="/apps/bean/servertime", methods={"GET", "POST"}, metatype=false)
 public class ServerTimeServlet extends SlingAllMethodsServlet {
 
 	/**
-	 *  Serves local server time in milliseconds to be use by masthead ajax call
+	 * 
 	 */
-	private static final long serialVersionUID = -904811244667775164L;
-	private final org.slf4j.Logger log = LoggerFactory.getLogger(ServerTimeServlet.class);
-	
+	private static final long serialVersionUID = 1328232554162676712L;
+
+	/**
+	 *  Serves local server time in milliseconds to be use by ajax call
+	 */
 	@Override
 	protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
 		this.getServerTime(request, response);
@@ -44,7 +45,6 @@ public class ServerTimeServlet extends SlingAllMethodsServlet {
 			jsn.put("time", HelperUtils.getServerTime());
 			out.print(jsn.toString());
 		} catch (JSONException e) {
-			log.error("error " + e.getMessage());
 			e.printStackTrace();
 		}
 		out.flush();
