@@ -28,3 +28,35 @@
     
     }
 }
+
+#map {
+	width: 80%;
+	height: 600px;
+	margin: 0 auto;
+	display: block;
+}
+
+.shopinfo{
+	min-width: 100px;
+	min-height: 40px;
+	display: block;
+	border: 1px solid #000;
+	padding: 10px;
+	.shopname{
+		font-weight: bold;
+		font-size: 16px;
+		display: block;
+		padding: 2px 0;
+	}
+	.shopaddress{
+		font-size: 12px;
+		display: block;
+		padding: 2px;
+	}
+	.shopphone{
+		font-size: 12px;
+		display: block;
+		font-style: italic;
+		padding: 2px;
+	}
+}

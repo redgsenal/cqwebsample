@@ -2,8 +2,6 @@
  * Plugins JS Reggie Senal
  */
 $(function(){
-	console.log('plugin js');
-	
 	// get server time via OSGi
 	$.fn.servertime = function(){
 		var $this = $(this);
@@ -15,9 +13,9 @@ $(function(){
 			console.log("fail to get server time");
 		}).
 		done(function(reply){
-			console.log(reply);
 			$this.text(reply.time);
 		});
-		console.log(jqxhr);
 	}
 });
+
+

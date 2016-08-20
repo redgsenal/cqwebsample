@@ -106,6 +106,7 @@ CQ.ShopItem = CQ.Ext.extend(CQ.form.CompositeField, {
         	allowBlank: true,
             fieldLabel: "Telephone Number: ",
             width: 680,
+            regex: new RegExp(/^\+?\d+(-\d+)*$/),
             listeners: {
                 change: {
                     scope: this,
@@ -118,6 +119,7 @@ CQ.ShopItem = CQ.Ext.extend(CQ.form.CompositeField, {
         	allowBlank: false,
             fieldLabel: "Map Latitude and Longitude (lat, long): ",
             width: 680,
+            regex: new RegExp(/^(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)$/),
             listeners: {
                 change: {
                     scope: this,
